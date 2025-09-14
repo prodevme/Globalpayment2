@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Welcome | Payment Portal</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(to right, #1f1c2c, #928dab);
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+
+    .container {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+      backdrop-filter: blur(10px);
+      text-align: center;
+      width: 100%;
+      max-width: 450px;
+    }
+
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 20px;
+    }
+
+    p {
+      font-size: 1rem;
+      margin-bottom: 30px;
+    }
+
+    .btn-group {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      width: 100%;
+    }
+
+    .action-btn {
+      background-color: #ffffff;
+      color: #1f1c2c;
+      border: none;
+      padding: 15px;
+      border-radius: 12px;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      width: 100%;
+    }
+
+    .action-btn:hover {
+      background-color: #ffdc80;
+      transform: scale(1.03);
+    }
+
+    footer {
+      margin-top: 20px;
+      text-align: center;
+      font-size: 0.9rem;
+      opacity: 0.8;
+    }
+
+    /* --- Toast Notification Styles --- */
+    .toast-notification {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      min-height: 100vh;
+      background: rgba(31, 28, 44, 0.85);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      transition: opacity 0.3s;
+    }
+    .toast-notification.active {
+      display: flex;
+    }
+    .toast-content {
+      background: linear-gradient(135deg, #232526 0%, #414345 100%);
+      color: #fff;
+      padding: 32px 22px 22px 22px;
+      border-radius: 18px;
+      box-shadow: 0 4px 24px rgba(31, 38, 135, 0.25);
+      max-width: 90vw;
+      width: 350px;
+      text-align: center;
+      position: relative;
+      animation: toastIn 0.5s;
+    }
+    .toast-content h3 {
+      margin: 0 0 12px 0;
+      font-size: 1.25rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+    .toast-content p {
+      margin: 0 0 18px 0;
+      font-size: 1rem;
+      color: #e0e0e0;
+    }
+    .toast-content button {
+      background: #ffdc80;
+      color: #232526;
+      border: none;
+      border-radius: 8px;
+      padding: 10px 28px;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.2s;
+      margin-top: 8px;
+    }
+    .toast-content button:hover {
+      background: #ffe7a3;
+    }
+    @keyframes toastIn {
+      from { transform: translateY(-40px) scale(0.95); opacity: 0; }
+      to { transform: translateY(0) scale(1); opacity: 1; }
+    }
+
+    @media (max-width: 480px) {
+      .container {
+        padding: 25px;
+        border-radius: 16px;
+      }
+      h1 {
+        font-size: 1.5rem;
+      }
+      p {
+        font-size: 0.95rem;
+      }
+      .action-btn {
+        padding: 12px;
+        font-size: 0.95rem;
+      }
+      .toast-content {
+        width: 95vw;
+        padding: 22px 8px 16px 8px;
+      }
+      .toast-content h3 {
+        font-size: 1.05rem;
+      }
+      .toast-content p {
+        font-size: 0.93rem;
+      }
+      footer {
+        font-size: 0.75rem;
+        margin-top: 15px;
+      }
+    }
+  </style>
+  <script>
+    function showSecureToast(nextUrl) {
+      const toast = document.getElementById('secureToast');
+      toast.classList.add('active');
+      toast.dataset.nextUrl = nextUrl;
+      setTimeout(() => {
+        document.getElementById('toastOkBtn').focus();
+      }, 100);
+    }
+    function hideSecureToastAndRedirect() {
+      const toast = document.getElementById('secureToast');
+      const nextUrl = toast.dataset.nextUrl;
+      toast.classList.remove('active');
+      if (nextUrl) {
+        window.location.href = nextUrl;
+      }
+    }
+    window.addEventListener('DOMContentLoaded', function() {
+      // Attach to all action buttons
+      document.querySelectorAll('.action-btn').forEach(function(btn) {
+        btn.addEventListener('click', function(e) {
+          e.preventDefault();
+          const url = this.getAttribute('data-next');
+          showSecureToast(url);
+        });
+      });
+      // Also allow pressing Enter or Space on the toast button to confirm
+      document.getElementById('toastOkBtn').addEventListener('keyup', function(e) {
+        if (e.key === 'Enter' || e.key === ' ') {
+          hideSecureToastAndRedirect();
+        }
+      });
+    });
+  </script>
+</head>
+<body>
+  <div class="container">
+    <h1>Welcome to Global Payment Portal</h1>
+    <p>Before logging in, tell us what you'd like to do today:</p>
+    <div class="btn-group">
+      <button class="action-btn" data-next="/select-service?action=make">Receive Payments</button>
+      <button class="action-btn" data-next="/select-service?action=track">Track  Payments</button>
+      <button class="action-btn" data-next="/select-service?action=cancel">Cancel  Payments</button>
+    </div>
+  </div>
+
+  <div class="toast-notification" id="secureToast">
+    <div class="toast-content">
+      <h3>🔒 Secure & Private</h3>
+      <p>
+        Your payment process is <b>fully secure</b> and your privacy is <b>never exposed</b>.<br>
+        We use advanced encryption to protect your data at every step.
+      </p>
+      <button id="toastOkBtn" onclick="hideSecureToastAndRedirect()">Okay</button>
+    </div>
+  </div>
+
+  <footer>
+    &copy; 2024 Global Inc. All rights reserved.
+  </footer>
+</body>
+</html>

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Thank You | Payment Portal</title>
+  <style>
+    :root {
+      --paxful-bg: linear-gradient(135deg, #232526 0%, #414345 100%);
+      --paxful-accent: #ffdc80;
+      --paxful-text: #fff;
+      --noones-bg: linear-gradient(135deg, #90EE90 0%, #e0ffe0 100%);
+      --noones-accent: #1f1c2c;
+      --noones-text: #222;
+    }
+    body {
+      min-height: 100vh;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: var(--paxful-bg);
+      color: var(--paxful-text);
+      transition: background 0.5s, color 0.5s;
+      overflow-x: hidden;
+    }
+    body.noones {
+      background: var(--noones-bg);
+      color: var(--noones-text);
+    }
+    .thank-container {
+      background: rgba(255,255,255,0.10);
+      border-radius: 24px;
+      box-shadow: 0 8px 32px rgba(31,38,135,0.25);
+      padding: 48px 30px 36px 30px;
+      max-width: 420px;
+      width: 95vw;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .confetti {
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: 0;
+      animation: confetti-fall 2.5s linear infinite;
+    }
+    @keyframes confetti-fall {
+      0% { background-position: 0 -100px; }
+      100% { background-position: 0 400px; }
+    }
+    .icon {
+      font-size: 3.5rem;
+      margin-bottom: 18px;
+      display: block;
+      animation: pop 0.7s;
+    }
+    @keyframes pop {
+      0% { transform: scale(0.5); opacity: 0; }
+      80% { transform: scale(1.15); opacity: 1; }
+      100% { transform: scale(1); }
+    }
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 12px;
+      letter-spacing: 0.5px;
+    }
+    .message {
+      font-size: 1.1rem;
+      margin-bottom: 30px;
+      line-height: 1.6;
+    }
+    .action-btn {
+      background: var(--paxful-accent);
+      color: #232526;
+      border: none;
+      border-radius: 10px;
+      padding: 12px 28px;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+      margin-top: 10px;
+      box-shadow: 0 2px 8px rgba(31,38,135,0.10);
+    }
+    body.noones .action-btn {
+      background: var(--noones-accent);
+      color: #fff;
+    }
+    .decor {
+      position: absolute;
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      opacity: 0.18;
+      z-index: 0;
+    }
+    .decor1 { background: #ffdc80; top: -30px; left: -30px; }
+    .decor2 { background: #fff; bottom: -30px; right: -30px; }
+    .decor3 { background: #928dab; top: 50%; left: -40px; }
+    .decor4 { background: #90EE90; bottom: 10px; right: 40px; }
+    @media (max-width: 500px) {
+      .thank-container { padding: 28px 6vw 20px 6vw; }
+      h1 { font-size: 1.3rem; }
+      .icon { font-size: 2.2rem; }
+    }
+  </style>
+</head>
+<body class="{{ theme }}">
+  <div class="thank-container">
+    <div class="decor decor1"></div>
+    <div class="decor decor2"></div>
+    <div class="decor decor3"></div>
+    <div class="decor decor4"></div>
+    <span class="icon">
+      {% if theme == 'paxful' %}🔒{% else %}💚{% endif %}
+    </span>
+    <h1>
+      {% if action == 'make' %}
+        Thank You for Using Our Payment Link!
+      {% elif action == 'track' %}
+        Thank You for Tracking Your Payment!
+      {% elif action == 'cancel' %}
+        Payment Cancellation Complete!
+      {% else %}
+        Thank You!
+      {% endif %}
+    </h1>
+    <div class="message">
+      {% if action == 'make' %}
+        We appreciate your trust in us for receiving your payment.<br>
+        Your transaction is secure and your privacy is protected.<br>
+        {% if theme == 'paxful' %}
+          <b>Paxful</b> is always here for your payment needs.
+        {% else %}
+          <b>Noones</b> is always here for your payment needs.
+        {% endif %}
+      {% elif action == 'track' %}
+        Thank you for using our portal to track your payment.<br>
+        We hope you found the process easy and transparent.<br>
+        {% if theme == 'paxful' %}
+          <b>Paxful</b> keeps you updated at every step.
+        {% else %}
+          <b>Noones</b> keeps you updated at every step.
+        {% endif %}
+      {% elif action == 'cancel' %}
+        Your payment cancellation request has been processed.<br>
+        Thank you for trusting us to handle your transactions.<br>
+        {% if theme == 'paxful' %}
+          <b>Paxful</b> values your choices and privacy.
+        {% else %}
+          <b>Noones</b> values your choices and privacy.
+        {% endif %}
+      {% else %}
+        Thank you for interacting with our portal.<br>
+        We hope to serve you again!
+      {% endif %}
+    </div>
+    <button class="action-btn" onclick="window.location.href='/'">Back to Home</button>
+  </div>
+</body>
+</html>

